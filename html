@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>掴めるオブジェクト + パススルー</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/super-hands@4.0.2/dist/super-hands.min.js"></script>
+  </head>
+  <body>
+    <a-scene
+      webxr="optionalFeatures: hand-tracking, layers, dom-overlay, passthrough;"
+      renderer="colorManagement: true; physicallyCorrectLights: true; alpha: true;"
+      physics="gravity: -9.8"
+    >
+
+      <!-- パススルー対応 -->
+      <a-entity webxr-passthrough></a-entity>
+
+      <!-- カメラと手 -->
+      <a-entity camera position="0 1.6 0" look-controls></a-entity>
+      <a-entity hand-tracking-controls="hand: left" super-hands></a-entity>
+      <a-entity hand-tracking-controls="hand: right" super-hands></a-entity>
+
+      <!-- 掴める赤い箱 -->
+      <a-box position="0 1 -1" color="red" width="0.3" height="0.3" depth="0.3"
+             dynamic-body
+             class="grabbable"
+             grabbable
+             shadow></a-box>
+
+      <!-- 光と背景 -->
+      <a-light type="ambient" intensity="0.5"></a-light>
+      <a-sky color="#000000"></a-sky> <!-- パススルーを活かすため真っ黒 -->
+
+    </a-scene>
+  </body>
+</html>
