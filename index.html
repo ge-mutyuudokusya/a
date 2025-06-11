@@ -1,67 +1,55 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <title>VRインタラクション拡張</title>
+    <meta charset="utf-8">
+    <title>Quest 3 手で掴めるVR + パススルー</title>
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/super-hands@4.0.2/dist/super-hands.min.js"></script>
   </head>
   <body>
     <a-scene
-      physics="gravity: -9.8"
-      webxr="optionalFeatures: hand-tracking, layers, passthrough;"
+      renderer="alpha: true"
       background="transparent: true"
-      renderer="colorManagement: true; physicallyCorrectLights: true; alpha: true"
+      webxr="optionalFeatures: local-floor, bounded-floor, hand-tracking, layers, passthrough;"
+      physics="gravity: -9.8"
     >
-      <!-- パススルー背景（Meta Quest 3） -->
+
+      <!-- パススルー背景 -->
       <a-entity webxr-passthrough></a-entity>
 
-      <!-- 環境音（掴むと再生） -->
-      <a-assets>
-        <audio id="grab-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_d09d5d05b2.mp3"></audio>
-      </a-assets>
-
-      <!-- グラブ可能オブジェクト：赤い箱 -->
-      <a-box position="0 1.4 -0.5" color="red" width="0.3" height="0.3" depth="0.3"
-             dynamic-body grabbable stretchable
-             event-set__enter="_event: grab-start; _target: #sound1; visible: true; _delay: 0"
-             animation="property: rotation; to: 0 360 0; dur: 4000; loop: true; easing: linear">
-        <a-sound id="sound1" src="#grab-sound" on="grab-start" autoplay="false"></a-sound>
-      </a-box>
-
-      <!-- 青い球 -->
-      <a-sphere position="0.4 1.4 -0.6" radius="0.15" color="blue"
-                dynamic-body grabbable stretchable
-                animation="property: position; dir: alternate; dur: 2000; loop: true; to: 0.4 1.6 -0.6"></a-sphere>
-
-      <!-- 緑のドーナツ -->
-      <a-torus position="-0.4 1.3 -0.6" radius="0.2" tube="0.05" color="green"
-               dynamic-body grabbable stretchable
-               animation="property: scale; dir: alternate; dur: 1500; loop: true; to: 1.2 1.2 1.2"></a-torus>
-
-      <!-- モアイ像（GLB） -->
-      <a-assets>
-        <a-asset-item id="moai" src="https://cdn.aframe.io/test-models/models/glTF-Binary/moai.glb"></a-asset-item>
-      </a-assets>
-      <a-entity gltf-model="#moai" position="0 1.2 -0.9" scale="0.3 0.3 0.3"
-                dynamic-body grabbable stretchable></a-entity>
-
       <!-- 照明 -->
-      <a-entity light="type: directional; intensity: 0.6;" position="1 3 1"></a-entity>
+      <a-entity light="type: directional; intensity: 0.8;" position="0 4 1"></a-entity>
 
-      <!-- カメラ + コントローラー + 手トラッキング -->
-      <a-entity id="rig" position="0 1.6 0">
+      <!-- 掴めるオブジェクト（箱） -->
+      <a-box
+        position="0 1.3 -0.6"
+        width="0.2" height="0.2" depth="0.2"
+        color="red"
+        dynamic-body
+        grabbable
+        class="grabbable"
+      ></a-box>
+
+      <!-- カメラと手 -->
+      <a-entity id="cameraRig" position="0 1.6 0">
         <a-entity camera look-controls></a-entity>
 
-        <!-- 左手（手 or コントローラー） -->
-        <a-entity hand-tracking-controls="hand: left" super-hands></a-entity>
-        <a-entity laser-controls="hand: left" raycaster="objects: [grabbable]" super-hands></a-entity>
+        <!-- 左手 -->
+        <a-entity
+          hand-tracking-controls="hand: left"
+          super-hands
+          gesture-detector
+        ></a-entity>
 
-        <!-- 右手（手 or コントローラー） -->
-        <a-entity hand-tracking-controls="hand: right" super-hands></a-entity>
-        <a-entity laser-controls="hand: right" raycaster="objects: [grabbable]" super-hands></a-entity>
+        <!-- 右手 -->
+        <a-entity
+          hand-tracking-controls="hand: right"
+          super-hands
+          gesture-detector
+        ></a-entity>
       </a-entity>
+
     </a-scene>
   </body>
 </html>
