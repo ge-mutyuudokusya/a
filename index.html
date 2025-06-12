@@ -2,54 +2,49 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Quest 3 手で掴めるVR + パススルー</title>
+    <title>MR：掴んで動かせるボックス</title>
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/super-hands@4.0.2/dist/super-hands.min.js"></script>
   </head>
   <body>
     <a-scene
-      renderer="alpha: true"
       background="transparent: true"
-      webxr="optionalFeatures: local-floor, bounded-floor, hand-tracking, layers, passthrough;"
+      renderer="alpha: true; physicallyCorrectLights: true;"
+      webxr="optionalFeatures: hand-tracking, layers, dom-overlay, passthrough;"
       physics="gravity: -9.8"
     >
-
-      <!-- パススルー背景 -->
+      <!-- ✅ 現実世界を背景に（MR） -->
       <a-entity webxr-passthrough></a-entity>
 
-      <!-- 照明 -->
-      <a-entity light="type: directional; intensity: 0.8;" position="0 4 1"></a-entity>
-
-      <!-- 掴めるオブジェクト（箱） -->
+      <!-- ✅ 掴んで動かせる赤いキューブ -->
       <a-box
-        position="0 2.3 -0.6"
-        width="0.2" height="0.2" depth="0.2"
-        color="red"
-        dynamic-body
+        id="box"
+        position="0 1.4 -0.5"
+        depth="0.3"
+        height="0.3"
+        width="0.3"
+        color="crimson"
+        shadow
         grabbable
-        class="grabbable"
+        stretchable
+        draggable
+        dynamic-body
       ></a-box>
 
-      <!-- カメラと手 -->
-      <a-entity id="cameraRig" position="0 1.6 0">
+      <!-- ✅ 照明（影や立体感） -->
+      <a-entity light="type: directional; intensity: 0.8" position="0 4 1"></a-entity>
+
+      <!-- ✅ カメラ & ハンドトラッキング -->
+      <a-entity id="rig" position="0 1.6 0">
         <a-entity camera look-controls></a-entity>
 
         <!-- 左手 -->
-        <a-entity
-          hand-tracking-controls="hand: left"
-          super-hands
-          gesture-detector
-        ></a-entity>
+        <a-entity hand-tracking-controls="hand: left" super-hands></a-entity>
 
         <!-- 右手 -->
-        <a-entity
-          hand-tracking-controls="hand: right"
-          super-hands
-          gesture-detector
-        ></a-entity>
+        <a-entity hand-tracking-controls="hand: right" super-hands></a-entity>
       </a-entity>
-
     </a-scene>
   </body>
 </html>
