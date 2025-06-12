@@ -1,49 +1,64 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>癒し空間</title>
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <meta charset="utf-8" />
+    <title>掴める範囲拡大（パススルー＋VR）</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/super-hands@4.0.2/dist/super-hands.min.js"></script>
   </head>
   <body>
-    <a-scene background="color: #C2F0F7">
-      
-      <!-- 地面 -->
-      <a-plane color="#A3D9A5" rotation="-90 0 0" width="30" height="30"></a-plane>
-      
-      <!-- 太陽光 -->
-      <a-entity light="type: directional; intensity: 1; castShadow: true" position="2 4 2"></a-entity>
-      <a-entity light="type: ambient; color: #FFF"></a-entity>
+    <a-scene
+      webxr="optionalFeatures: hand-tracking, layers, passthrough;"
+      renderer="colorManagement: true; physicallyCorrectLights: true; alpha: true;"
+      background="transparent: true"
+      physics="gravity: -9.8"
+    >
+      <!-- パススルー -->
+      <a-entity webxr-passthrough></a-entity>
 
-      <!-- 木 -->
-      <a-cylinder position="-3 1 0" radius="0.2" height="2" color="#8B5A2B"></a-cylinder>
-      <a-sphere position="-3 2.5 0" radius="1" color="#228B22"></a-sphere>
-      
-      <a-cylinder position="4 1 -2" radius="0.2" height="2.5" color="#8B5A2B"></a-cylinder>
-      <a-sphere position="4 3 -2" radius="1.2" color="#2E8B57"></a-sphere>
+      <!-- 掴めるオブジェクト -->
+      <a-box
+        position="0 1.4 -0.5"
+        width="0.2"
+        height="0.2"
+        depth="0.2"
+        color="red"
+        dynamic-body
+        grabbable
+        shadow
+      ></a-box>
 
-      <!-- 浮かぶヒーリングボール -->
-      <a-entity 
-        geometry="primitive: sphere; radius: 0.5"
-        material="color: #FFD700; emissive: #FFD700; emissiveIntensity: 0.6"
-        position="0 1.5 -2"
-        animation="property: position; dir: alternate; dur: 3000; easing: easeInOutSine; loop: true; to: 0 2.5 -2"
-      ></a-entity>
+      <a-sphere
+        position="0.4 1.4 -0.5"
+        radius="0.1"
+        color="blue"
+        dynamic-body
+        grabbable
+        shadow
+      ></a-sphere>
 
-      <!-- 癒しの音 -->
-      <a-sound 
-        src="https://cdn.glitch.global/47e28f71-fb5f-44df-a89a-72d1cba6dd90/ambient-birds.mp3?v=1686146368324"
-        autoplay="true" 
-        loop="true" 
-        positional="false" 
-        volume="0.5">
-      </a-sound>
+      <!-- 照明 -->
+      <a-entity light="type: directional; intensity: 0.8;" position="1 3 2"></a-entity>
 
-      <!-- カメラ -->
-      <a-entity position="0 1.6 5">
-        <a-camera wasd-controls-enabled="true" look-controls-enabled="true"></a-camera>
+      <!-- カメラ＋両手 -->
+      <a-entity id="cameraRig" position="0 1.6 0">
+        <a-entity camera look-controls></a-entity>
+
+        <!-- 左手：掴み範囲を広げる -->
+        <a-entity
+          hand-tracking-controls="hand: left"
+          super-hands
+          sphere-collider="objects: [grabbable]; radius: 0.15"
+        ></a-entity>
+
+        <!-- 右手：掴み範囲を広げる -->
+        <a-entity
+          hand-tracking-controls="hand: right"
+          super-hands
+          sphere-collider="objects: [grabbable]; radius: 0.15"
+        ></a-entity>
       </a-entity>
-
     </a-scene>
   </body>
 </html>
