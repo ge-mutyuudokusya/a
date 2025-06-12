@@ -2,49 +2,51 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>MR：掴んで動かせるボックス</title>
+    <title>パススルー＋掴めるVRオブジェクト</title>
+    <meta name="description" content="VR passthrough + grab objects">
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
+    <!-- hand tracking + physics -->
     <script src="https://cdn.jsdelivr.net/npm/super-hands@4.0.2/dist/super-hands.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
   </head>
   <body>
     <a-scene
-      background="transparent: true"
-      renderer="alpha: true; physicallyCorrectLights: true;"
-      webxr="optionalFeatures: hand-tracking, layers, dom-overlay, passthrough;"
+      webxr="optionalFeatures: hit-test, hand-tracking, dom-overlay, layers, passthrough;"
+      xr-mode-ui="enabled: true"
+      environment="preset: default"
       physics="gravity: -9.8"
+      background="transparent: true"
+      renderer="colorManagement: true; physicallyCorrectLights: true;"
     >
-      <!-- ✅ 現実世界を背景に（MR） -->
+
+      <!-- パススルー有効化（Meta Quest対応ブラウザでのみ反映） -->
       <a-entity webxr-passthrough></a-entity>
 
-      <!-- ✅ 掴んで動かせる赤いキューブ -->
+      <!-- グラブ可能なオブジェクト -->
       <a-box
-        id="box"
-        position="0 ２.4 -0.5"
-        depth="0.3"
-        height="0.3"
+        position="0 1 -1"
         width="0.3"
-        color="crimson"
-        shadow
-        grabbable
-        stretchable
-        draggable
+        height="0.3"
+        depth="0.3"
+        color="#FF0000"
         dynamic-body
+        grabbable
+        shadow
       ></a-box>
 
-      <!-- ✅ 照明（影や立体感） -->
-      <a-entity light="type: directional; intensity: 0.8" position="0 4 1"></a-entity>
+      <a-sphere
+        position="0.5 1 -1"
+        radius="0.15"
+        color="#00CCFF"
+        dynamic-body
+        grabbable
+        shadow
+      ></a-sphere>
 
-      <!-- ✅ カメラ & ハンドトラッキング -->
-      <a-entity id="rig" position="0 1.6 0">
-        <a-entity camera look-controls></a-entity>
-
-        <!-- 左手 -->
-        <a-entity hand-tracking-controls="hand: left" super-hands></a-entity>
-
-        <!-- 右手 -->
-        <a-entity hand-tracking-controls="hand: right" super-hands></a-entity>
-      </a-entity>
+      <!-- カメラ（手トラッキング） -->
+      <a-entity camera position="0 1.6 0" look-controls></a-entity>
+      <a-entity hand-tracking-controls="hand: left" super-hands></a-entity>
+      <a-entity hand-tracking-controls="hand: right" super-hands></a-entity>
     </a-scene>
   </body>
 </html>
