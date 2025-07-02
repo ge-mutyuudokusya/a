@@ -17,6 +17,27 @@
 
       <a-entity id="rightHand" hand-tracking-grab-controls="hand: right"></a-entity>
       <a-entity id="leftHand" hand-tracking-grab-controls="hand: left"></a-entity>
+    
+    <!-- 背景にカメラ映像を表示する -->
+<video id="camera-background" autoplay muted playsinline style="
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+"></video>
+
+<script>
+navigator.mediaDevices.getUserMedia({ video: true })
+  .then(stream => {
+    document.getElementById('camera-background').srcObject = stream;
+  })
+  .catch(err => {
+    console.error("カメラの取得に失敗:", err);
+  });
+</script>
+
     </a-scene>
+    
   </body>
 </html>
