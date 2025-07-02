@@ -8,17 +8,7 @@
     <script src="hover.js"></script>
   </head>
   <body>
-    <a-scene environment>
-      <a-assets></a-assets>
-
-      <a-entity camera position="0 1.5 0" look-controls wasd-controls></a-entity>
-
-      <a-box position="0 1.6 -1" grabbable hover color="tomato" depth="0.3" height="0.3" width="0.3"></a-box>
-
-      <a-entity id="rightHand" hand-tracking-grab-controls="hand: right"></a-entity>
-      <a-entity id="leftHand" hand-tracking-grab-controls="hand: left"></a-entity>
-    
-    <!-- 背景にカメラ映像を表示する -->
+        <!-- 背景にカメラ映像を表示する -->
 <video id="camera-background" autoplay muted playsinline style="
   position: fixed;
   top: 0; left: 0;
@@ -36,6 +26,17 @@ navigator.mediaDevices.getUserMedia({ video: true })
     console.error("カメラの取得に失敗:", err);
   });
 </script>
+    <a-scene environment>
+      <a-assets></a-assets>
+
+      <a-entity camera position="0 1.5 0" look-controls wasd-controls></a-entity>
+
+      <a-box position="0 1.6 -1" grabbable hover color="tomato" depth="0.3" height="0.3" width="0.3"></a-box>
+
+      <a-entity id="rightHand" hand-tracking-grab-controls="hand: right"></a-entity>
+      <a-entity id="leftHand" hand-tracking-grab-controls="hand: left"></a-entity>
+    
+
 
     </a-scene>
     
